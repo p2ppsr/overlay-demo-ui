@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - production
 
 env:
   CURRENT_BRANCH: ${{ github.ref_name }}
@@ -20,7 +21,7 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - run: npm run build
+      - run: CI=true npm run build
       - uses: RafikFarhad/push-to-gcr-github-action@v4.1
         with:
           gcloud_service_key: ${{ secrets.DOCKER_REGISTRY_PUSH_KEY }}
@@ -30,8 +31,8 @@ jobs:
           image_tag: ${{ env.CURRENT_BRANCH }}-${{ github.sha }}
       - uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ secrets.gcp_credentials }}
-      - uses: google-github-actions/deploy-cloudrun@v1
+          credentials_json: ${{ secrets.GCP_DEPLOY_CREDS }}
+      - uses: google-github-actions/deploy-cloudrun@v0
         with:
           service: ${{ env.GCR_IMAGE_NAME }}-${{ env.CURRENT_BRANCH }}
           image: "${{ env.GCR_HOST }}/${{ env.GOOGLE_PROJECT_ID }}/${{ env.GCR_IMAGE_NAME }}:${{ env.CURRENT_BRANCH }}-${{ github.sha }}"
