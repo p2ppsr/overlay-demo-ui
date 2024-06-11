@@ -56,7 +56,7 @@ const App = () => {
   const [tasks, setTasks] = useState([])
   const classes = useStyles()
 
-  const hostingURL = 'https://staging-overlay.babbage.systems'
+  const hostingURL = 'https://prod-overlay-services-ivi63c6zsq-uw.a.run.app'
 
   const handleCreateSubmit = async e => {
     e.preventDefault()
