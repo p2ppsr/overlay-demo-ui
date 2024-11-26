@@ -1,6 +1,6 @@
 {
-  "short_name": "HelloOverlay",
-  "name": "HelloOverlay",
+  "short_name": "Overlay Demo UI",
+  "name": "Overlay Demo UI",
   "icons": [
     {
       "src": "favicon.ico",
