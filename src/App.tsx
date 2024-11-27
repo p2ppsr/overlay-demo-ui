@@ -114,10 +114,8 @@ const App: React.FC = () => {
 
       const newToken = await createAction(args)
       const { beef } = toBEEFfromEnvelope(newToken as EnvelopeEvidenceApi)
-      const broadcasterConfig: SHIPBroadcasterConfig = {
-        resolver: new LookupResolver({ slapTrackers: [hostingURL] })
-      }
-      const result = await Transaction.fromBEEF(beef).broadcast(new SHIPBroadcaster(['tm_helloworld'], broadcasterConfig))
+
+      const result = await Transaction.fromBEEF(beef).broadcast(new SHIPBroadcaster(['tm_helloworld']))
       console.log(result)
 
       toast.dark('Message successfully broadcasted!')
@@ -174,15 +172,11 @@ const App: React.FC = () => {
         query.endDate = `${endDate}T23:59:59.999Z`
       }
 
-      const lookupConfig: LookupResolverConfig = {
-        slapTrackers: [hostingURL]
-      }
-      const resolver = new LookupResolver(lookupConfig)
+      const resolver = new LookupResolver()
       const lookupAnswer = await resolver.query({
         service: 'ls_helloworld',
         query
-      })
-      console.log(lookupAnswer)
+      }, 10000)
 
       if (lookupAnswer.type === 'output-list') {
         const tokensFromLookup = await Promise.all(lookupAnswer.outputs.map(async (output: any) => {
